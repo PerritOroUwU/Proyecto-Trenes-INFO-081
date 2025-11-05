@@ -1,6 +1,26 @@
-[Estaciones]
-Estacion Central (Santiago)
-Rancagua
-Talca
-Chillan
+Estación Central (Santiago)
+  Región Metropolitana
+  Principal nodo ferroviario del país
+  Conexiones: Rancagua, Chillán
+  Población: 8.242.459
 
+Rancagua
+  Región de O’Higgins
+  Distancia desde Santiago: ~87 km
+  Conexiones: Talca, Estación Central
+  Población: 274.407
+
+
+Talca
+  Región del Maule
+  Distancia desde Rancagua: ~200 km
+  Tiempo estimado: 2 h 30 min
+  Conexiones: Chillán, Rancagua
+  Población: 242.344
+
+
+Chillán
+  Región de Ñuble
+  Distancia desde Talca: ~180 km
+  Conexiones: Talca, Estación Central
+  Población: 204.091
