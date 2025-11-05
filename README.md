@@ -4,7 +4,6 @@ Repositorio del proyecto para programación
 
 Integrantes: Ian Bruning, Daniela Antimilla, Magdalena Delgado, Diego Aguirre.
 
-
 RESUMEN:
 En este proyecto incorporaremos un sistema de simulación a traves de una interfaz, que consistira principalmente en una estación de trenes donde se muestre en pantalla los diferentes trenes a usar, las rutas para llegar a los diferentes destinos, las estaciones y su número de personas que suben y bajan en cada estacion, el tiempo estimado para cada viajes, y eventos aleatorios con toma de desiciones.
 
