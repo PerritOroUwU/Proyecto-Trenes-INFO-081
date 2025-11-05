@@ -8,3 +8,5 @@ incorporar un sistema de simulación a traves de una interfaz, que consistira pr
 integrantes: Ian Bruning, Daniela Antimilla, Magdalena Delgado, Diego Aguirre
 
 Los dos indicadores a usar van a ser la capacidad del tren(cuantitativo), ya que eso se mostrará en pantalla en números donde se incluira el numero de personas que entra y salen del tren para mantener un orden en la capacidad maxima del mismo. El segundo indicador a usar sería el mensaje de eventos(cualitativo), porque estos se explicarian en mensajes que aparezcan en ventana junto con las desiciones a tomar.
+
+hola
