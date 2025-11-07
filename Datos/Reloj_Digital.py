@@ -15,3 +15,5 @@ etiqueta.pack(anchor = "center")
 
 actualizar_reloj()
 ventana.mainloop()
+#opinion(IAN): mira no esta mal si funciona pues funciona (obviamente usandolo de ejemplo)
+# pero preferiria usar daytime aunque seria 
