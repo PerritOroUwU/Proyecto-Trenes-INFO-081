@@ -11,7 +11,7 @@ Ademas el tiempo estimado para cada viaje y la incorporacion de eventos aleatori
 requeriran una toma de decisiones por parte del usuario, haciendo que la simulacion sea mas dinamica.
 
 ### DESCRIPCIÓN DE INDICADORES A UTILIZAR EN INTERFAZ:
-Se utilizaran 2 tipos de indicadores principales:
+* Se utilizaran 2 tipos de indicadores principales:
 
     * Capacidad del tren (cuantitativo):
     Este indicador mostrará en pantalla el numero de pasajeros que suben y bajan en cada estacion, 
@@ -23,7 +23,7 @@ Se utilizaran 2 tipos de indicadores principales:
     la cual el usuario tendra que tomar una decision para resolver cada evento.
 
 ### PERSISTENCIA DE DATOS:
-Para garantizar la persistencia de la informacion, el sistema almacenara los datos mas relevantes en 
+* Para garantizar la persistencia de la informacion, el sistema almacenara los datos mas relevantes en 
 archivos de texto (.txt). Estos tendran informacion como:
 
     * La configuracion inicial del sistema.
