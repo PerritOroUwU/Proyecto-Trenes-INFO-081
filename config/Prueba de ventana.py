@@ -16,48 +16,55 @@ def main():
     def prueba_de_acción_de_boton():
         ventana_prueba = tk.Toplevel(root)
         ventana_prueba.geometry("1024x600")
-    
+        ventana_prueba.title("Simulación Iniciada")
+        etiqueta = tk.Label(
+            ventana_prueba,
+            text="Simulación en curso...",
+            font=("Arial", 24)
+        )
+        etiqueta.pack(pady=20)
+
     boton_prueba = tk.Button(
         frame_prueba,
-        text="Botón de Prueba",
+        text="Iiniciar Simulación",
         command=prueba_de_acción_de_boton,
-        width=20,
+        width=25,
         height=2
     )
     boton_prueba.pack(pady=15)
-    
+
     boton_prueba2 = tk.Button(
         frame_prueba,
-        text="Botón de Prueba 2",
-        command=lambda: print("¡Botón 2 presionado!"),
-        width=20,
+        text="Acceso a datos de trenes",
+        command=prueba_de_acción_de_boton,
+        width=25,
         height=2
     )
     boton_prueba2.pack(pady=15)
-    
+        
     boton_prueba3 = tk.Button(
         frame_prueba,
-        text="Botón de Prueba 3",
-        command=lambda: print("¡Botón 3 presionado!"),
-        width=20,
+        text="Acceder a datos de estaciones",
+        command=prueba_de_acción_de_boton,
+        width=25,
         height=2
     )
     boton_prueba3.pack(pady=15)
     
     boton_prueba4 = tk.Button(
         frame_prueba,
-        text="Botón de Prueba 4",
-        command=lambda: print("¡Botón 4 presionado!"),
-        width=20,
+        text="Acceder a datos de rutas",
+        command=prueba_de_acción_de_boton,
+        width=25,
         height=2
     )
     boton_prueba4.pack(pady=15)
     
     boton_prueba5 = tk.Button(
         frame_prueba,
-        text="Botón de Prueba 5",
-        command=lambda: print("¡Botón 5 presionado!"),
-        width=20,
+        text="Modificar datos de simulación",
+        command=prueba_de_acción_de_boton,
+        width=25,
         height=2
     )
     boton_prueba5.pack(pady=15)
