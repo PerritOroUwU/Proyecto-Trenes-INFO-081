@@ -20,8 +20,15 @@ importantes en archivos(.txt), que tendrá información como: la configuración 
 los trenes y las rutas. Este archivo nos permitirá tanto la lectura como la escritura de datos y listas 
 simples, facilitando la carga y el guardado de la información del programa.
 
-Para poder correr el programa principal (Ventana_principal.py):
-1° Descargar el repositorio, para posteriormente abrir la carpeta en visual estudio
-2° Una vez echo esto ejecutar el programa en el archivo Ventana_principal.py.
-
-Aunque hay partes del codigo que se pueden ejecutar por cuenta propia (los cuales tienen dentro de su codigo if name==__main__) como [VENTANAS] 
+Para poder correr el programa principal Ventana_principal.py (considerando que ya haya descargado/clonado el repositorio)
+necesita abrir un terminal y escribir:
+-cd y el nombre de la carpeta en la cual estan los archivos de codigo
+Ejemplo: 
+cd "Proyecto-Trenes-INFO-081"
+en donde puede escribir ls para asegurarse que la se encuentre en la carpeta correcta
+-Posteriormente escribe python -m y el archivo que quiera correr eso si el archivo debe contener "if name==__main__"
+ya que estos archivos son los que se pueden ejecutar.
+Ejemplo:
+python -mVentana_principal.py //Para iniciar el programa principal
+o
+python -mUI.ventanas.py //esta es una ventana secundaria en donde el .UI sirve para localizar la ventana en especifico
