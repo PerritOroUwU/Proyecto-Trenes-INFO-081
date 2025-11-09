@@ -1,4 +1,9 @@
 import tkinter as tk
+from UI import *
+from logic import *
+from Datos import *
+from config import *
+from models import *
 
 def main():
     root = tk.Tk()
