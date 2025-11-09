@@ -35,7 +35,7 @@ Este metodo nos permitira realizar operaciones de lectura y escritura, facilitan
 como el guardado de informacion en listas simples, asegurando que los datos puedan ser reutilizados
 o actualizados sin perder el progreso de simulacion.
 
-### Ejemplo de cómo correr archivos principales
+### Ejemplo de cómo correr archivos principales:
 
 Para poder correr el programa principal Ventana_principal.py (considerando que ya haya descargado/clonado el repositorio)
 necesita abrir un terminal y escribir:
