@@ -25,5 +25,3 @@ Para poder correr el programa principal (Ventana_principal.py):
 2° Una vez echo esto ejecutar el programa en el archivo Ventana_principal.py.
 
 Aunque hay partes del codigo que se pueden ejecutar por cuenta propia (los cuales tienen dentro de su codigo if name==__main__) como [VENTANAS] 
-
-https://github.com/PerritOroUwU/Proyecto-Trenes-INFO-081.git
