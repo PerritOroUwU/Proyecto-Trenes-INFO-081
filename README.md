@@ -20,4 +20,10 @@ importantes en archivos(.txt), que tendrá información como: la configuración 
 los trenes y las rutas. Este archivo nos permitirá tanto la lectura como la escritura de datos y listas 
 simples, facilitando la carga y el guardado de la información del programa.
 
+Para poder correr el programa principal (Ventana_principal.py):
+1° Descargar el repositorio, para posteriormente abrir la carpeta en visual estudio
+2° Una vez echo esto ejecutar el programa en el archivo Ventana_principal.py.
+
+Aunque hay partes del codigo que se pueden ejecutar por cuenta propia (los cuales tienen dentro de su codigo if name==__main__) como [VENTANAS] 
+
 https://github.com/PerritOroUwU/Proyecto-Trenes-INFO-081.git
