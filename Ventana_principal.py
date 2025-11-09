@@ -1,9 +1,6 @@
 import tkinter as tk
-from UI import *
-from logic import *
-from Datos import *
-from config import *
-from models import *
+import os
+from UI.ventanas import acción_de_boton
 
 def main():
     root = tk.Tk()
@@ -18,17 +15,7 @@ def main():
         relief="raised"
     )
     frame_menu.pack(side="left", padx=10, pady=20)
-    def acción_de_boton():
-        ventana = tk.Toplevel(root)
-        ventana.geometry("1024x600")
-        ventana.title("Simulación Iniciada")
-        etiqueta = tk.Label(
-            ventana,
-            text="Simulación en curso...",
-            font=("Arial", 24)
-        )
-        etiqueta.pack(pady=20)
-
+    
     boton_IS = tk.Button(
         frame_menu,
         text="Iniciar Simulación",
