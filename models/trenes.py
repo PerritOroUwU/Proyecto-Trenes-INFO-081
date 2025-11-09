@@ -3,4 +3,3 @@ class tren:
         self.nombre= nombre
         self.capacidad= capacidad
         self.velocidad= velocidad
-
