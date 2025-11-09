@@ -13,11 +13,11 @@ requeriran una toma de decisiones por parte del usuario, haciendo que la simulac
 ### DESCRIPCIÓN DE INDICADORES A UTILIZAR EN INTERFAZ:
 Se utilizaran 2 tipos de indicadores principales:
 
-    1. Capacidad del tren (cuantitativo):
+    * Capacidad del tren (cuantitativo):
     Este indicador mostrará en pantalla el numero de pasajeros que suben y bajan en cada estacion, 
     manteniendo actualizado el conteo de capacidad, controlando que supere la capacidad maxima del tren.
 
-    2. Mensajes de eventos (cualitativo):
+    * Mensajes de eventos (cualitativo):
     Representara las situaciones o imprevistos que ocurran durante la simulacion (por ejemplo: retrasos 
     o fallas). Esto se mostraran mediante mensajes emergentes en la interfaz, acompañado de decisiones en
     la cual el usuario tendra que tomar una decision para resolver cada evento.
@@ -26,10 +26,10 @@ Se utilizaran 2 tipos de indicadores principales:
 Para garantizar la persistencia de la informacion, el sistema almacenara los datos mas relevantes en 
 archivos de texto (.txt). Estos tendran informacion como:
 
-    1. La configuracion inicial del sistema.
-    2. Las estaciones registradas.
-    3. Los trenes disponibles.
-    4. Las rutas definidas.
+    * La configuracion inicial del sistema.
+    * Las estaciones registradas.
+    * Los trenes disponibles.
+    * Las rutas definidas.
 
 Este metodo nos permitira realizar operaciones de lectura y escritura, facilitando tanto la carga
 como el guardado de informacion en listas simples, asegurando que los datos puedan ser reutilizados
