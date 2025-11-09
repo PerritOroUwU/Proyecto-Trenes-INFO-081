@@ -19,3 +19,5 @@ PERSISTENCIA DE DATOS: En lo que respecta a la persistencia de datos, almacenare
 importantes en archivos(.txt), que tendrá información como: la configuración inicial, las estaciones, 
 los trenes y las rutas. Este archivo nos permitirá tanto la lectura como la escritura de datos y listas 
 simples, facilitando la carga y el guardado de la información del programa.
+
+https://github.com/PerritOroUwU/Proyecto-Trenes-INFO-081.git
