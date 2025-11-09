@@ -29,6 +29,6 @@ en donde puede escribir ls para asegurarse que la se encuentre en la carpeta cor
 -Posteriormente escribe python -m y el archivo que quiera correr eso si el archivo debe contener "if name==__main__"
 ya que estos archivos son los que se pueden ejecutar.
 Ejemplo:
-python -mVentana_principal.py //Para iniciar el programa principal
+python -mVentana_principal //Para iniciar el programa principal
 o
-python -mUI.ventanas.py //esta es una ventana secundaria en donde el .UI sirve para localizar la ventana en especifico
+python -mUI.ventanas //esta es una ventana secundaria en donde el .UI sirve para localizar la ventana en especifico
