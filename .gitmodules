@@ -1,3 +1,6 @@
 [submodule "Repositorio"]
 	path = Repositorio
 	url = https://github.com/PerritOroUwU/INFO81-S2-G1-DesCom01.git
+[submodule "ppdc-timed-generator"]
+	path = ppdc-timed-generator
+	url = https://github.com/Santasy/INFO81-S2-G1-DesCom01.git
