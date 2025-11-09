@@ -31,7 +31,7 @@ def main():
 
     boton_IS = tk.Button(
         frame_menu,
-        text="Iiniciar Simulación",
+        text="Iniciar Simulación",
         command=acción_de_boton,
         width=25,
         height=2
