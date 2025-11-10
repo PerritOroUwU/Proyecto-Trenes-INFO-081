@@ -40,13 +40,17 @@ o actualizados sin perder el progreso de simulacion.
 clonado el repositorio), se debe hacer lo siguiente:
 
     * Abrir la terminal y escribir el siguiente comando:
-        * cd y el nombre de la carpeta del codigo (Ejemplo: cd "Proyecto-Trenes-INFO-081")
-        * Se puede usar el comando: ls (para asegurarse de que se encuentra en la carpeta correcta 
-        donde están los archivos de codigo).
-        * Escribe python -m y el archivo que quiera correr, el archivo a ejecutar debe contener 
-        "if name==main" ya que estos archivos son los que se pueden ejecutar (Ejemplo: python -mVentana_principal 
-        //Para iniciar el programa principal o python -mUI.ventanas //esta es una ventana secundaria en 
-        donde el .UI sirve para localizar la ventana en especifico).
+        * cd y el nombre de la carpeta del codigo, ejemplo:
+            * cd "Proyecto-Trenes-INFO-081"
+        * Se puede usar el comando, ejemplo:
+            * ls (para asegurarse de que se encuentra en la carpeta correcta 
+            donde están los archivos de codigo).
+        * Escribe python -m y el archivo que quiera correr, el archivo a ejecutar debe contener
+        "if name==main" ya que estos archivos son los que se pueden ejecutar, ejemplo:
+            Se pueden utilizar 2 metodos:
+            * python -mVentana_principal (para iniciar el programa principal) o 
+            * python -mUI.ventanas (esta es una ventana secundaria en donde el .UI sirve para 
+            localizar la ventana en especifico).
     
 
     
