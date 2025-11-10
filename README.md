@@ -46,11 +46,10 @@ clonado el repositorio), se debe hacer lo siguiente:
             * ls (para asegurarse de que se encuentra en la carpeta correcta 
             donde están los archivos de codigo).
         * Escribe python -m y el archivo que quiera correr, el archivo a ejecutar debe contener
-        "if name==main" ya que estos archivos son los que se pueden ejecutar,en donde dependiendo si se encuentra o no dentro de una carpeta se escribe:, 
-        ejemplo:
-            * python -mVentana_principal (para iniciar el programa principal).
-            * python -mUI.ventanas (esta es una ventana secundaria en donde el .UI sirve para 
-            localizar la ventana en especifico).
+        "if name==main" ya que estos archivos son los que se pueden ejecutar,en donde dependiendo si se encuentra o no dentro de una carpeta se escribe 
+            ejemplo:
+            * python -mVentana_principal (para iniciar el programa principal o un programa que no se encuentra dentro de una carpeta "secundaria").
+            * python -mUI.ventanas (esta ventana se encuentra en una carpeta secundaria o subcarpeta en donde el .UI sirve para localizar la ventana en especifico entrando en la carpeta correcta).
     
 
     
