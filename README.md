@@ -36,16 +36,17 @@ como el guardado de informacion en listas simples, asegurando que los datos pued
 o actualizados sin perder el progreso de simulacion.
 
 ### Ejemplo de cómo correr archivos principales:
+* Para ejecutar el programa principal Ventana_principal.py (considerando que ya se haya descargado o 
+clonado el repositorio), se debe hacer lo siguiente:
 
-Para poder correr el programa principal Ventana_principal.py (considerando que ya haya descargado/clonado el repositorio)
-necesita abrir un terminal y escribir:
--cd y el nombre de la carpeta en la cual estan los archivos de codigo
-Ejemplo: 
-cd "Proyecto-Trenes-INFO-081"
-en donde puede escribir ls para asegurarse que la se encuentre en la carpeta correcta
--Posteriormente escribe python -m y el archivo que quiera correr eso si el archivo debe contener "if name==__main__"
-ya que estos archivos son los que se pueden ejecutar.
-Ejemplo:
-python -mVentana_principal //Para iniciar el programa principal
-o
-python -mUI.ventanas //esta es una ventana secundaria en donde el .UI sirve para localizar la ventana en especifico
+    * Abrir la terminal y escribir el siguiente comando:
+        * cd y el nombre de la carpeta del codigo (Ejemplo: cd "Proyecto-Trenes-INFO-081")
+        * Se puede usar el comando: ls (para asegurarse de que se encuentra en la carpeta correcta 
+        donde están los archivos de codigo).
+        * Escribe python -m y el archivo que quiera correr, el archivo a ejecutar debe contener 
+        "if name==main" ya que estos archivos son los que se pueden ejecutar (Ejemplo: python -mVentana_principal 
+        //Para iniciar el programa principal o python -mUI.ventanas //esta es una ventana secundaria en 
+        donde el .UI sirve para localizar la ventana en especifico).
+    
+
+    
