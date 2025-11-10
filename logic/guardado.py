@@ -6,7 +6,7 @@ class SistemaDeGuardadp:
 
 
 
-         def cargar_simulacion(self)
+        def cargar_simulacion(self)
 
 
 
