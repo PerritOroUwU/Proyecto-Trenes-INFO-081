@@ -9,4 +9,3 @@ class configuracion:
         padingx = padx=10
         padingy = pady=20 
         #"Espacio en pixeles de separacion cada widget"  
-#REVISAR
