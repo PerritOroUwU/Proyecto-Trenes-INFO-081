@@ -1,5 +1,4 @@
 import tkinter as tk
-import os
 from UI.ventanas import acción_de_boton
 
 
