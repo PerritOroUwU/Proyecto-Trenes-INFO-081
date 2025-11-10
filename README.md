@@ -22,7 +22,7 @@ requeriran una toma de decisiones por parte del usuario, haciendo que la simulac
     o fallas). Esto se mostraran mediante mensajes emergentes en la interfaz, acompañado de decisiones en
     la cual el usuario tendra que tomar una decision para resolver cada evento.
 
-### persistencia de datos:
+### Persistencia de datos:
 * Para garantizar la persistencia de la informacion, el sistema almacenara los datos mas relevantes en 
 archivos de texto (.txt). Estos tendran informacion como:
 
