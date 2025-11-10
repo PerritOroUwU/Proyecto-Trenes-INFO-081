@@ -48,7 +48,7 @@ clonado el repositorio), se debe hacer lo siguiente:
         * Escribe python -m y el archivo que quiera correr, el archivo a ejecutar debe contener
         "if name==main" ya que estos archivos son los que se pueden ejecutar, se pueden utilizar 2 metodos, 
         ejemplo:
-            * python -mVentana_principal (para iniciar el programa principal) o 
+            * python -mVentana_principal (para iniciar el programa principal).
             * python -mUI.ventanas (esta es una ventana secundaria en donde el .UI sirve para 
             localizar la ventana en especifico).
     
