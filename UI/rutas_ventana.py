@@ -1,5 +1,5 @@
 import tkinter as tk
-from Datos.rutas import Rutas_tren
+from Datos.rutas import rutas
 
 def acción_de_boton():
     ventana = tk.Toplevel()
