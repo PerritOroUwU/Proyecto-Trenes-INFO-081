@@ -46,7 +46,7 @@ def main():
     boton_AR = tk.Button(
         frame_menu,
         text="Acceder a datos de rutas",
-        command=acción_de_boton,
+        command=acción_de_boton_rutas,
         width=25,
         height=2
     )
