@@ -12,7 +12,7 @@ def acción_de_boton():
 
 # ventana que muestra las rutas
 def ventana_rutas():
-    rutas = RutasTren() 
+    rutas = rutaa() 
 
     ventana = tk.Toplevel()
     ventana.title("Datos de rutas")
@@ -27,7 +27,5 @@ def ventana_rutas():
     for ruta in rutas.obtener_rutas():
         lista.insert(tk.END, ruta)
 
-
-# Esta función es la que usará el botón
 def acción_de_boton_rutas():
     ventana_rutas()
