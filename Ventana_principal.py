@@ -1,5 +1,5 @@
 import tkinter as tk
-from UI.rutas import acción_de_boton, acción_de_boton_rutas
+from UI.rutas_ventana import acción_de_boton, acción_de_boton_rutas
 
 def main():
     root = tk.Tk()
