@@ -1,4 +1,4 @@
-class Rutastren:
+class rutaa:
     def __init__(self):
         self.rutas = [
             "Estacion Central - Rancagua",
