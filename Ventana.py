@@ -3,7 +3,8 @@ from tkinter import ttk
 from tkinter import messagebox 
 from logic.Guardado import guardar_datos, cargar_datos
 from models.rutas import __init__
-from models import Tren, Estacion, Ruta
+from models import Tren, Estacion, Ruta, Pasajero
+import datetime as dt
 
 class SimuladorTrenes:
     def __init__(self, master):
@@ -56,18 +57,55 @@ class SimuladorTrenes:
             )
         return objetos_tren
 
+    def deserializar_pasajero(self, pasajero_dict):
+        """Convierte un diccionario cargado de vuelta a un objeto Pasajero."""
+        
+        # 1. Convertir strings ISO 8601 a objetos datetime
+        tiempo_llegada = dt.datetime.fromisoformat(pasajero_dict["tiempo_llegada"])
+        
+        tiempo_partida = None
+        if pasajero_dict["tiempo_partida"]:
+            tiempo_partida = dt.datetime.fromisoformat(pasajero_dict["tiempo_partida"])
+            
+        # 2. Crear el objeto Pasajero
+        p = Pasajero(
+            origen=pasajero_dict["origen"],
+            destino=pasajero_dict["destino"],
+            tiempo_llegada=tiempo_llegada
+        )
+        p.id = pasajero_dict["id"] # Restaurar el ID original
+        p.tiempo_partida = tiempo_partida
+        
+        # 3. Asegurar que el contador estático no se pierda si este ID es el más alto
+        if p.id >= Pasajero.id_counter:
+            Pasajero.id_counter = p.id + 1
+            
+        return p
+
     def deserializar_estaciones(self, estaciones_dict):
-        """Convierte los diccionarios de estaciones cargados (JSON) de vuelta a objetos Estacion."""
+        """
+        Convierte los diccionarios de estaciones cargados (JSON) de vuelta a objetos Estacion,
+        incluyendo la reconstrucción de pasajeros.
+        """
         objetos_estacion = {}
         for nombre, specs in estaciones_dict.items():
-            # Asumiendo que specs es la tupla de coordenadas (X, Y)
-            objetos_estacion[nombre] = Estacion(
+            
+            # 1. Crear la Estación
+            estacion = Estacion(
                 nombre=nombre,
-                coordenada_x=specs[0],
-                coordenada_y=specs[1]
+                coordenada_x=specs['coord_x'],
+                coordenada_y=specs['coord_y']
             )
+            
+            # 2. Reconstruir los Pasajeros
+            if specs.get("pasajeros_esperando"):
+                for p_dict in specs["pasajeros_esperando"]:
+                    pasajero = self.deserializar_pasajero(p_dict)
+                    estacion.agregar_pasajero(pasajero) # Agrega el objeto Pasajero a la lista
+            
+            objetos_estacion[nombre] = estacion
+            
         return objetos_estacion
-
 
     def guardar_estado(self):
         """Método que llama a la función de guardado externo."""
@@ -96,7 +134,8 @@ class SimuladorTrenes:
                 "Acceder a datos de estación",
                 "Acceder a datos de ruta",
                 "Modificar datos",
-                "GUARDAR ESTADO"
+                "GUARDAR ESTADO",
+                "CARGAR ESTADO"
             ]
                     
             for i, text in enumerate(botones_izq):
@@ -200,6 +239,8 @@ class SimuladorTrenes:
             self.modificar_datos()
         elif action_nombre == "GUARDAR ESTADO": # <--- NUEVA LÓGICA
             self.guardar_estado()
+        elif action_nombre == "CARGAR ESTADO": # <--- NUEVA LÓGICA
+            self.cargar_estado()
         else:
             print(f"ADVERTENCIA: Acción '{action_nombre}' no implementada.")
         
