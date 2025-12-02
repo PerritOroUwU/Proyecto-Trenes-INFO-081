@@ -55,7 +55,7 @@ class SimuladorTrenes:
         self.map_canvas = None
 
     class GeneradorUniforme(Generador):
-        from Ppdc_timed_generator.generador import generador_uniforme
+        from Ppdc_timed_generator.generadores import generador, generador_uniforme
         generador_uniforme.generar_clientes()
 
     def guardar_estado(self):
@@ -321,5 +321,6 @@ if __name__ == '__main__':
     root = tk.Tk()
     app = SimuladorTrenes(root)
     root.mainloop()
+
 
 
