@@ -3,7 +3,7 @@ from tkinter import ttk
 from tkinter import messagebox 
 from logic.Guardado import guardar_datos, cargar_datos
 from models.rutas import __init__
-from models import Tren, Estacion, Ruta, Pasajero
+from models.clases import Tren, Estacion, Ruta, Pasajero
 import datetime as dt
 
 class SimuladorTrenes:
@@ -237,9 +237,9 @@ class SimuladorTrenes:
             self.modificar_datos()
         elif action_nombre == "Modificar datos":
             self.modificar_datos()
-        elif action_nombre == "GUARDAR ESTADO": # <--- NUEVA LÓGICA
+        elif action_nombre == "GUARDAR ESTADO": 
             self.guardar_estado()
-        elif action_nombre == "CARGAR ESTADO": # <--- NUEVA LÓGICA
+        elif action_nombre == "CARGAR ESTADO": 
             self.cargar_estado()
         else:
             print(f"ADVERTENCIA: Acción '{action_nombre}' no implementada.")
