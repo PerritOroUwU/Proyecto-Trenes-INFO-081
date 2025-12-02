@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox 
-from Guardado import guardar_datos, cargar_datos
+from config.Guardado import guardar_datos, cargar_datos
 
 class SimuladorTrenes:
     def __init__(self, master):
@@ -269,46 +269,46 @@ class SimuladorTrenes:
                                                 specs['velocidad_max']))
         
     def modificar_datos(self):
-        from ModificarDatos import modificar_datos
+        from config.ModificarDatos import modificar_datos
         modificar_datos(self)
         
     def gestionar_trenes(self):
-        from ModificarTrenes import gestionar_trenes
+        from config.ModificarTrenes import gestionar_trenes
         gestionar_trenes(self)
         def agregar_tren():
-            from ModificarTrenes import agregar_tren
+            from config.ModificarTrenes import agregar_tren
             agregar_tren(self)
         def quitar_tren():
-            from ModificarTrenes import quitar_tren
+            from config.ModificarTrenes import quitar_tren
             quitar_tren(self)
     def actualizar_trenes(self, listbox):
-        from ModificarTrenes import actualizar_trenes
+        from config.ModificarTrenes import actualizar_trenes
         actualizar_trenes(self, listbox)
 
     def gestionar_estaciones(self):
-        from ModificarEstaciones import gestionar_estaciones
+        from config.ModificarEstaciones import gestionar_estaciones
         gestionar_estaciones(self)
         def añadir_estación():
-            from ModificarEstaciones import añadir_estación
+            from config.ModificarEstaciones import añadir_estación
             añadir_estación(self)
         def quitar_estación():
-            from ModificarEstaciones import quitar_estación
+            from config.ModificarEstaciones import quitar_estación
             quitar_estación(self)
     def actualizar_estaciones(self, listbox):
-        from ModificarEstaciones import actualizar_estaciones
+        from config.ModificarEstaciones import actualizar_estaciones
         actualizar_estaciones(self, listbox)
     
     def gestionar_rutas(self):
-        from ModificarRutas import gestionar_rutas
+        from config.ModificarRutas import gestionar_rutas
         gestionar_rutas(self)
         def añadir_ruta():
-            from ModificarRutas import añadir_ruta
+            from config.ModificarRutas import añadir_ruta
             añadir_ruta(self)
         def quitar_ruta():
-            from ModificarRutas import quitar_ruta
+            from config.ModificarRutas import quitar_ruta
             quitar_ruta(self)
     def actualizar_rutas(self, listbox):
-        from ModificarRutas import Actualizar_rutas
+        from config.ModificarRutas import Actualizar_rutas
         Actualizar_rutas(self, listbox)
         
     def crear_panel_listas(self, parent_frame, title, items):
