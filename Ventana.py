@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox 
 from config.Guardado import guardar_datos, cargar_datos
+from models.rutas import rutaa
 
 class SimuladorTrenes:
     def __init__(self, master):
@@ -16,15 +17,12 @@ class SimuladorTrenes:
             self.trenes = { "BHU": {"capacidad": 150, "combustible": "Diésel", "velocidad_max": 120}, 
                            "EMU": {"capacidad": 300, "combustible": "Eléctrico", "velocidad_max": 160}
                            }
-            self.estaciones = { "Santiago": (50, 200), 
+            self.estaciones = { "Estación central": (50, 200), 
                                "Rancagua": (150, 300), 
                                "Talca": (300, 100), 
                                "Chillán": (450, 400)
                                }
-            self.rutas = [ ("Santiago", "Rancagua", 80), 
-                           ("Rancagua", "Talca", 150), 
-                           ("Talca", "Chillán", 100)
-                           ]
+            self.rutas = rutaa
         else:
             self.trenes = data["trenes"]
             self.estaciones = data["estaciones"]
