@@ -3,6 +3,8 @@ from tkinter import ttk
 from tkinter import messagebox 
 from logic.Guardado import guardar_datos, cargar_datos
 from models.rutas import __init__
+from models import clases
+from Ppdc_timed_generator.generador import Generador
 
 class SimuladorTrenes:
     def __init__(self, master):
@@ -55,8 +57,7 @@ class SimuladorTrenes:
         self.map_canvas = None
 
     class GeneradorUniforme(Generador):
-        from Ppdc_timed_generator.generadores import generador, generador_uniforme
-        generador_uniforme.generar_clientes()
+        from generadores.generador_uniforme import GeneradorUniforme
 
     def guardar_estado(self):
         """Método que llama a la función de guardado externo."""
