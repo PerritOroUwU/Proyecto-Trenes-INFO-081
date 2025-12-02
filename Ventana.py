@@ -9,7 +9,7 @@ class SimuladorTrenes:
         self.master = master
         master.title("Simulador de Trenes")        
         
-        master.geometry("800x600")
+        master.geometry("900x700")
 
         data = cargar_datos()
 
@@ -321,6 +321,7 @@ if __name__ == '__main__':
     root = tk.Tk()
     app = SimuladorTrenes(root)
     root.mainloop()
+
 
 
 
