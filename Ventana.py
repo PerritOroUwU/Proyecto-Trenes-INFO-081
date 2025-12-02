@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox 
 from config.Guardado import guardar_datos, cargar_datos
-from models.rutas import rutaa
+from models.rutas import __init__
 
 class SimuladorTrenes:
     def __init__(self, master):
@@ -22,7 +22,7 @@ class SimuladorTrenes:
                                "Talca": (300, 100), 
                                "Chillán": (450, 400)
                                }
-            self.rutas = rutaa
+            self.rutas = __init__
         else:
             self.trenes = data["trenes"]
             self.estaciones = data["estaciones"]
@@ -54,6 +54,10 @@ class SimuladorTrenes:
         self.crear_paneles()
         self.map_canvas = None
 
+    class GeneradorUniforme(Generador):
+        from ppdec-timed-generator.ppdc_timed_generator.generador import generador_uniforme
+        generador_uniforme.generar_clientes()
+
     def guardar_estado(self):
         """Método que llama a la función de guardado externo."""
         if guardar_datos(self.trenes, self.estaciones, self.rutas):
@@ -81,7 +85,7 @@ class SimuladorTrenes:
                 "Acceder a datos de estación",
                 "Acceder a datos de ruta",
                 "Modificar datos",
-                "Guardar estado del simulador"
+                "GUARDAR ESTADO"
             ]
                     
             for i, text in enumerate(botones_izq):
@@ -105,20 +109,11 @@ class SimuladorTrenes:
         
         data_frame = ttk.Frame(self.master, padding="10")
         data_frame.grid(row=1, column=0, sticky="nsew")
-        
+
         data_frame.grid_columnconfigure(0, weight=1)
-        data_frame.grid_columnconfigure(1, weight=1)
-        data_frame.grid_columnconfigure(2, weight=1)
-        
-        panel1 = self.crear_panel_listas(data_frame, "Tipos de Trenes", ["BHU", "EMU"])
-        panel1.grid(row=0, column=0, padx=5, sticky="nsew")
-       
-        estaciones = ["Estación central (Santiago)", "Rancagua", "Talca", "Chillán"]
-        panel2 = self.crear_panel_listas(data_frame, "Estaciones", estaciones)
-        panel2.grid(row=0, column=1, padx=5, sticky="nsew")
         
         map_panel = ttk.LabelFrame(data_frame, text="Rutas y Mapa")
-        map_panel.grid(row=0, column=2, padx=5, sticky="nsew")
+        map_panel.grid(row=0, column=0, padx=5, sticky="nsew", columnspan=1)
         
         map_container = ttk.Frame(map_panel)
         map_container.pack(fill="both", expand=True, padx=5, pady=5)
