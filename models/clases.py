@@ -84,3 +84,15 @@ class Estacion:
                 
         self.pasajeros_esperando = pasajeros_restantes
         return pasajeros_a_cargar
+    
+class Ruta:
+    """
+    Representa una conexión directa (ruta) entre dos estaciones.
+    """
+    def __init__(self, origen: str, destino: str, distancia_km: float):
+        self.origen = origen       # Nombre de la estación de origen
+        self.destino = destino     # Nombre de la estación de destino
+        self.distancia_km = distancia_km
+        
+    def __str__(self):
+        return f"Ruta: {self.origen} -> {self.destino} ({self.distancia_km} km)"
