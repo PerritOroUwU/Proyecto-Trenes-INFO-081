@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox 
-from config.Guardado import guardar_datos, cargar_datos
+from logic.Guardado import guardar_datos, cargar_datos
 from models.rutas import __init__
 
 class SimuladorTrenes:
@@ -321,3 +321,4 @@ if __name__ == '__main__':
     root = tk.Tk()
     app = SimuladorTrenes(root)
     root.mainloop()
+
