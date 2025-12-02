@@ -3,8 +3,7 @@ from tkinter import ttk
 from tkinter import messagebox 
 from logic.Guardado import guardar_datos, cargar_datos
 from models.rutas import __init__
-from models import clases
-from Ppdc_timed_generator.generador import Generador
+from models import Tren, Estacion, Ruta
 
 class SimuladorTrenes:
     def __init__(self, master):
@@ -15,49 +14,60 @@ class SimuladorTrenes:
 
         data = cargar_datos()
 
-        if not data["trenes"] and not data["estaciones"] and not data["rutas"]:
-            self.trenes = { "BHU": {"capacidad": 150, "combustible": "Diésel", "velocidad_max": 120}, 
-                           "EMU": {"capacidad": 300, "combustible": "Eléctrico", "velocidad_max": 160}
-                           }
-            self.estaciones = { "Estación central": (50, 200), 
-                               "Rancagua": (150, 300), 
-                               "Talca": (300, 100), 
-                               "Chillán": (450, 400)
-                               }
-            self.rutas = __init__
+        default_trenes = {
+            "BHU": Tren(nombre="BHU", capacidad=150, combustible="Diésel", velocidad_max=120),
+            "EMU": Tren(nombre="EMU", capacidad=300, combustible="Eléctrico", velocidad_max=160),
+            "C-2500": Tren(nombre="C-2500", capacidad=200, combustible="Híbrido", velocidad_max=140)
+        }
+        
+        # 2. Definir Estaciones y Rutas por defecto (Asegúrate de usar la clase Estacion aquí también)
+        default_estaciones = {
+            "Santiago": Estacion("Santiago", 50, 200),
+            "Rancagua": Estacion("Rancagua", 150, 300),
+            "Talca": Estacion("Talca", 300, 100),
+            "Chillán": Estacion("Chillán", 450, 400)
+        }
+        default_rutas = [ ("Santiago", "Rancagua", 80), ("Rancagua", "Talca", 150), ("Talca", "Chillán", 100) ]
+        
+        # 3. Asignar los datos cargados o los valores por defecto
+        
+        # Si el archivo de guardado no existe o devuelve datos vacíos
+        if not data["trenes"] and not data["estaciones"]:
+            self.trenes = default_trenes
+            self.estaciones = default_estaciones
+            self.rutas = default_rutas
         else:
-            self.trenes = data["trenes"]
-            self.estaciones = data["estaciones"]
-            self.rutas = data["rutas"]
-
-        self.trenes = {
-            "BHU": {"capacidad": 150, "combustible": "Diésel", "velocidad_max": 120},
-            "EMU": {"capacidad": 300, "combustible": "Eléctrico", "velocidad_max": 160}
-        }
-
-        self.estaciones = {
-            "Santiago": (50, 200),
-            "Rancagua": (150, 300),
-            "Talca": (300, 100),
-            "Chillán": (450, 400)
-        }
-
-        self.rutas = [
-            ("Santiago", "Rancagua", 80), 
-            ("Rancagua", "Talca", 150),
-            ("Talca", "Chillán", 100)
-        ]
-        
-        master.grid_columnconfigure(0, weight=1)
-        master.grid_rowconfigure(0, weight=2) 
-        master.grid_rowconfigure(1, weight=1) 
-        
+            # Aquí es donde ocurre el cambio crucial: deserializar los datos cargados
+            self.trenes = self.deserializar_trenes(data["trenes"])
+            self.estaciones = self.deserializar_estaciones(data["estaciones"])
+            self.rutas = data["rutas"] # Las rutas son listas/tuplas simples
+            
         self.crear_interfaz()
-        self.crear_paneles()
-        self.map_canvas = None
 
-    class GeneradorUniforme(Generador):
-        from generadores.generador_uniforme import GeneradorUniforme
+    def deserializar_trenes(self, trenes_dict):
+        """Convierte los diccionarios de trenes cargados (JSON) de vuelta a objetos Tren."""
+        objetos_tren = {}
+        for nombre, specs in trenes_dict.items():
+            objetos_tren[nombre] = Tren(
+                nombre=nombre,
+                capacidad=specs['capacidad'],
+                combustible=specs['combustible'],
+                velocidad_max=specs['velocidad_max']
+            )
+        return objetos_tren
+
+    def deserializar_estaciones(self, estaciones_dict):
+        """Convierte los diccionarios de estaciones cargados (JSON) de vuelta a objetos Estacion."""
+        objetos_estacion = {}
+        for nombre, specs in estaciones_dict.items():
+            # Asumiendo que specs es la tupla de coordenadas (X, Y)
+            objetos_estacion[nombre] = Estacion(
+                nombre=nombre,
+                coordenada_x=specs[0],
+                coordenada_y=specs[1]
+            )
+        return objetos_estacion
+
 
     def guardar_estado(self):
         """Método que llama a la función de guardado externo."""
@@ -322,7 +332,4 @@ if __name__ == '__main__':
     root = tk.Tk()
     app = SimuladorTrenes(root)
     root.mainloop()
-
-
-
 

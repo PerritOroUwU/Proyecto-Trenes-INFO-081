@@ -34,7 +34,7 @@ def cargar_datos():
         }
     
     try:
-        with open(DATA_FILE, 'r') as f:
+        with open(DATA_FILE_PATH, 'r') as f:
             data = json.load(f)
             print(f"Datos cargados exitosamente desde {DATA_FILE_PATH}")
             return data
