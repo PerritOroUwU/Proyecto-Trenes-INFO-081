@@ -1,444 +1,158 @@
 """
-Sistema de guardado y carga de datos del simulador de trenes.
-Maneja la serialización/deserialización de objetos a formato JSON.
+Módulo principal para modificar datos del simulador de trenes.
+Proporciona una ventana central con acceso a la gestión de trenes, estaciones y rutas.
 """
 
-import json
-import os
-import datetime as dt
-from typing import Dict, List, Any, Optional
-from pathlib import Path
+import tkinter as tk
+from tkinter import ttk, messagebox
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from Ventana import SimuladorTrenes
 
 
-# Constantes de configuración
-SAVE_DIR = "save_data"
-DATA_FILENAME = "simulador_datos.json"
-BACKUP_FILENAME = "simulador_datos_backup.json"
-DATA_FILE_PATH = os.path.join(SAVE_DIR, DATA_FILENAME)
-BACKUP_FILE_PATH = os.path.join(SAVE_DIR, BACKUP_FILENAME)
-
-
-def _asegurar_directorio_guardado():
+def modificar_datos(simulador: 'SimuladorTrenes'):
     """
-    Crea el directorio de guardado si no existe.
-    
-    Returns:
-        True si el directorio existe o fue creado, False si hubo error
-    """
-    try:
-        Path(SAVE_DIR).mkdir(parents=True, exist_ok=True)
-        return True
-    except Exception as e:
-        print(f"Error al crear directorio de guardado: {e}")
-        return False
-
-
-def serializar_trenes(trenes_objetos: Dict) -> Dict[str, Dict[str, Any]]:
-    """
-    Convierte un diccionario de objetos Tren a formato JSON-compatible.
+    Abre una ventana central para acceder a las opciones de modificación de datos.
     
     Args:
-        trenes_objetos: Diccionario {nombre: objeto_Tren}
-        
-    Returns:
-        Diccionario con datos serializados
+        simulador: Instancia del SimuladorTrenes
     """
-    data = {}
-    for nombre, tren in trenes_objetos.items():
-        try:
-            data[nombre] = {
-                "capacidad": tren.capacidad,
-                "combustible": tren.combustible,
-                "velocidad_max": tren.velocidad_max
-            }
-        except AttributeError as e:
-            print(f"Advertencia: Error al serializar tren '{nombre}': {e}")
-            continue
+    print("DEBUG ModificarDatos: Iniciando creación de ventana")  # Debug
     
-    return data
+    try:
+        ventana_modificar = tk.Toplevel(simulador.master)
+        ventana_modificar.title("Modificar Datos del Sistema")
+        ventana_modificar.geometry("450x350")
+        
+        print("DEBUG ModificarDatos: Ventana Toplevel creada")  # Debug
+        
+        # Hacer la ventana modal y traerla al frente
+        ventana_modificar.transient(simulador.master)
+        ventana_modificar.grab_set()
+        ventana_modificar.lift()
+        ventana_modificar.focus_force()
+        
+        # Asegurar que sea visible
+        ventana_modificar.attributes('-topmost', True)
+        ventana_modificar.after(100, lambda: ventana_modificar.attributes('-topmost', False))
+        
+        print("DEBUG ModificarDatos: Configuración modal aplicada")  # Debug
+    
+        # Frame principal con padding
+        main_frame = ttk.Frame(ventana_modificar, padding=20)
+        main_frame.pack(fill='both', expand=True)
+    
+        # Título
+        titulo = ttk.Label(
+            main_frame,
+            text="Seleccione qué desea modificar:",
+            font=('TkDefaultFont', 11, 'bold')
+        )
+        titulo.pack(pady=(0, 20))
+    
+        # Frame para los botones
+        botones_frame = ttk.Frame(main_frame)
+        botones_frame.pack(fill='both', expand=True)
+    
+        # Configurar grid del frame de botones
+        botones_frame.grid_columnconfigure(0, weight=1)
+    
+        # Botón 1: Modificar Trenes
+        btn_trenes = ttk.Button(
+            botones_frame,
+            text="Modificar Trenes",
+            command=lambda: _abrir_gestion_trenes(simulador, ventana_modificar),
+            width=30
+        )
+        btn_trenes.grid(row=0, column=0, pady=10, padx=20)
+    
+        # Botón 2: Modificar Estaciones
+        btn_estaciones = ttk.Button(
+            botones_frame,
+            text="Modificar Estaciones",
+            command=lambda: _abrir_gestion_estaciones(simulador, ventana_modificar),
+            width=30
+        )
+        btn_estaciones.grid(row=1, column=0, pady=10, padx=20)
+    
+        # Botón 3: Modificar Rutas
+        btn_rutas = ttk.Button(
+            botones_frame,
+            text="Modificar Rutas",
+            command=lambda: _abrir_gestion_rutas(simulador, ventana_modificar),
+            width=30
+        )
+        btn_rutas.grid(row=2, column=0, pady=10, padx=20)
+    
+        # Separador
+        ttk.Separator(main_frame, orient='horizontal').pack(fill='x', pady=20)
+    
+        # Botón de cerrar
+        btn_cerrar = ttk.Button(
+            main_frame,
+            text="Cerrar",
+         command=ventana_modificar.destroy,
+            width=15
+        )
+        btn_cerrar.pack(pady=(0, 10))
+    
+            # Centrar la ventana en la pantalla
+        ventana_modificar.update_idletasks()
+        ancho_ventana = ventana_modificar.winfo_width()
+        alto_ventana = ventana_modificar.winfo_height()
+        ancho_pantalla = ventana_modificar.winfo_screenwidth()
+        alto_pantalla = ventana_modificar.winfo_screenheight()
+        
+        x = (ancho_pantalla // 2) - (ancho_ventana // 2)
+        y = (alto_pantalla // 2) - (alto_ventana // 2)
+        
+        ventana_modificar.geometry(f"450x350+{x}+{y}")
+        
+        print("DEBUG ModificarDatos: Ventana centrada")  # Debug
+        print(f"DEBUG ModificarDatos: Geometría: {ventana_modificar.geometry()}")  # Debug
+        print(f"DEBUG ModificarDatos: Ventana visible: {ventana_modificar.winfo_viewable()}")  # Debug
+        
+        # Forzar actualización
+        ventana_modificar.update()
+        
+    except Exception as e:
+        print(f"DEBUG ModificarDatos: ERROR - {e}")  # Debug
+        messagebox.showerror("Error", f"Error al crear la ventana:\n{str(e)}")
+        return
 
 
-def serializar_pasajero(pasajero) -> Dict[str, Any]:
+def _abrir_gestion_trenes(simulador: 'SimuladorTrenes', parent_window: tk.Toplevel):
     """
-    Convierte un objeto Pasajero a formato JSON-compatible.
+    Abre el módulo de gestión de trenes.
     
     Args:
-        pasajero: Objeto Pasajero
-        
-    Returns:
-        Diccionario con datos del pasajero
+        simulador: Instancia del SimuladorTrenes
+        parent_window: Ventana padre (puede ser None)
     """
-    try:
-        data = {
-            "id": pasajero.id,
-            "origen": pasajero.origen,
-            "destino": pasajero.destino,
-            "tiempo_llegada": pasajero.tiempo_llegada.isoformat(),
-            "tiempo_partida": (
-                pasajero.tiempo_partida.isoformat() 
-                if pasajero.tiempo_partida else None
-            )
-        }
-        return data
-    except Exception as e:
-        print(f"Error al serializar pasajero ID {getattr(pasajero, 'id', '?')}: {e}")
-        return None
+    from config.ModificarTrenes import gestionar_trenes
+    gestionar_trenes(simulador)
 
 
-def serializar_estaciones(estaciones_objetos: Dict) -> Dict[str, Dict[str, Any]]:
+def _abrir_gestion_estaciones(simulador: 'SimuladorTrenes', parent_window: tk.Toplevel):
     """
-    Convierte objetos Estacion a formato JSON-compatible.
-    Incluye la serialización de pasajeros en espera.
+    Abre el módulo de gestión de estaciones.
     
     Args:
-        estaciones_objetos: Diccionario {nombre: objeto_Estacion}
-        
-    Returns:
-        Diccionario con datos serializados
+        simulador: Instancia del SimuladorTrenes
+        parent_window: Ventana padre (puede ser None)
     """
-    data = {}
-    for nombre, estacion in estaciones_objetos.items():
-        try:
-            # Serializar solo los pasajeros válidos
-            pasajeros_serializados = []
-            for p in estacion.pasajeros_esperando:
-                p_data = serializar_pasajero(p)
-                if p_data:
-                    pasajeros_serializados.append(p_data)
-            
-            data[nombre] = {
-                "coord_x": estacion.coordenada_x,
-                "coord_y": estacion.coordenada_y,
-                "pasajeros_esperando": pasajeros_serializados
-            }
-        except AttributeError as e:
-            print(f"Advertencia: Error al serializar estación '{nombre}': {e}")
-            continue
-    
-    return data
+    from config.ModificarEstaciones import gestionar_estaciones
+    gestionar_estaciones(simulador)
 
 
-def serializar_rutas(rutas_objetos: List) -> List[tuple]:
+def _abrir_gestion_rutas(simulador: 'SimuladorTrenes', parent_window: tk.Toplevel):
     """
-    Convierte una lista de objetos Ruta a formato JSON-compatible.
+    Abre el módulo de gestión de rutas.
     
     Args:
-        rutas_objetos: Lista de objetos Ruta
-        
-    Returns:
-        Lista de tuplas (origen, destino, distancia)
+        simulador: Instancia del SimuladorTrenes
+        parent_window: Ventana padre (puede ser None)
     """
-    rutas_serializadas = []
-    
-    for ruta in rutas_objetos:
-        try:
-            # Si es un objeto Ruta
-            if hasattr(ruta, 'origen'):
-                rutas_serializadas.append((
-                    ruta.origen,
-                    ruta.destino,
-                    ruta.distancia_km
-                ))
-            # Si ya es una tupla (compatibilidad con formato antiguo)
-            elif isinstance(ruta, (list, tuple)) and len(ruta) == 3:
-                rutas_serializadas.append(tuple(ruta))
-            else:
-                print(f"Advertencia: Formato de ruta no reconocido: {ruta}")
-        except Exception as e:
-            print(f"Error al serializar ruta: {e}")
-            continue
-    
-    return rutas_serializadas
-
-
-def _crear_backup(archivo_origen: str, archivo_backup: str) -> bool:
-    """
-    Crea una copia de seguridad del archivo de datos.
-    
-    Args:
-        archivo_origen: Ruta del archivo a respaldar
-        archivo_backup: Ruta donde guardar el backup
-        
-    Returns:
-        True si el backup fue exitoso
-    """
-    try:
-        if os.path.exists(archivo_origen):
-            import shutil
-            shutil.copy2(archivo_origen, archivo_backup)
-            return True
-    except Exception as e:
-        print(f"Advertencia: No se pudo crear backup: {e}")
-    return False
-
-
-def guardar_datos(
-    trenes: Dict,
-    estaciones: Dict,
-    rutas: List,
-    crear_backup: bool = True
-) -> bool:
-    """
-    Guarda todos los datos del simulador en formato JSON.
-    
-    Args:
-        trenes: Diccionario de objetos Tren
-        estaciones: Diccionario de objetos Estacion
-        rutas: Lista de objetos Ruta
-        crear_backup: Si es True, crea un backup antes de guardar
-        
-    Returns:
-        True si el guardado fue exitoso, False en caso contrario
-    """
-    # Asegurar que existe el directorio
-    if not _asegurar_directorio_guardado():
-        print(f"Error: No se pudo crear el directorio '{SAVE_DIR}'")
-        return False
-    
-    # Crear backup si se solicita
-    if crear_backup:
-        _crear_backup(DATA_FILE_PATH, BACKUP_FILE_PATH)
-    
-    # Serializar los datos
-    try:
-        data = {
-            "version": "1.0",
-            "timestamp": dt.datetime.now().isoformat(),
-            "trenes": serializar_trenes(trenes),
-            "estaciones": serializar_estaciones(estaciones),
-            "rutas": serializar_rutas(rutas)
-        }
-    except Exception as e:
-        print(f"Error al serializar los datos: {e}")
-        return False
-    
-    # Guardar en archivo
-    try:
-        with open(DATA_FILE_PATH, 'w', encoding='utf-8') as f:
-            json.dump(data, f, indent=4, ensure_ascii=False)
-        
-        print(f"✓ Datos guardados exitosamente en '{DATA_FILE_PATH}'")
-        print(f"  - Trenes: {len(trenes)}")
-        print(f"  - Estaciones: {len(estaciones)}")
-        print(f"  - Rutas: {len(rutas)}")
-        return True
-        
-    except IOError as e:
-        print(f"Error de E/S al guardar los datos: {e}")
-        return False
-    except Exception as e:
-        print(f"Error inesperado al guardar los datos: {e}")
-        return False
-
-
-def cargar_datos() -> Dict[str, Any]:
-    """
-    Carga los datos del simulador desde el archivo JSON.
-    Si el archivo no existe o hay error, retorna datos vacíos.
-    
-    Returns:
-        Diccionario con las claves 'trenes', 'estaciones', 'rutas'
-    """
-    datos_vacios = {
-        "trenes": {},
-        "estaciones": {},
-        "rutas": []
-    }
-    
-    # Verificar si existe el archivo
-    if not os.path.exists(DATA_FILE_PATH):
-        print(f"Archivo de datos no encontrado en '{DATA_FILE_PATH}'")
-        print("Cargando valores por defecto...")
-        return datos_vacios
-    
-    # Intentar cargar el archivo
-    try:
-        with open(DATA_FILE_PATH, 'r', encoding='utf-8') as f:
-            data = json.load(f)
-        
-        # Validar estructura básica
-        if not isinstance(data, dict):
-            print("Error: El archivo de datos no tiene el formato correcto")
-            return datos_vacios
-        
-        # Extraer datos con valores por defecto
-        resultado = {
-            "trenes": data.get("trenes", {}),
-            "estaciones": data.get("estaciones", {}),
-            "rutas": data.get("rutas", [])
-        }
-        
-        print(f"✓ Datos cargados exitosamente desde '{DATA_FILE_PATH}'")
-        if "timestamp" in data:
-            print(f"  - Última modificación: {data['timestamp']}")
-        print(f"  - Trenes: {len(resultado['trenes'])}")
-        print(f"  - Estaciones: {len(resultado['estaciones'])}")
-        print(f"  - Rutas: {len(resultado['rutas'])}")
-        
-        return resultado
-        
-    except json.JSONDecodeError as e:
-        print(f"Error al decodificar JSON: {e}")
-        print("Intentando cargar desde backup...")
-        return _cargar_desde_backup()
-        
-    except IOError as e:
-        print(f"Error de E/S al cargar los datos: {e}")
-        return datos_vacios
-        
-    except Exception as e:
-        print(f"Error inesperado al cargar los datos: {e}")
-        return datos_vacios
-
-
-def _cargar_desde_backup() -> Dict[str, Any]:
-    """
-    Intenta cargar datos desde el archivo de backup.
-    
-    Returns:
-        Diccionario con datos o datos vacíos si falla
-    """
-    datos_vacios = {
-        "trenes": {},
-        "estaciones": {},
-        "rutas": []
-    }
-    
-    if not os.path.exists(BACKUP_FILE_PATH):
-        print("No se encontró archivo de backup")
-        return datos_vacios
-    
-    try:
-        with open(BACKUP_FILE_PATH, 'r', encoding='utf-8') as f:
-            data = json.load(f)
-        
-        print(f"✓ Datos cargados desde backup: '{BACKUP_FILE_PATH}'")
-        
-        return {
-            "trenes": data.get("trenes", {}),
-            "estaciones": data.get("estaciones", {}),
-            "rutas": data.get("rutas", [])
-        }
-    except Exception as e:
-        print(f"Error al cargar backup: {e}")
-        return datos_vacios
-
-
-def exportar_datos(
-    trenes: Dict,
-    estaciones: Dict,
-    rutas: List,
-    nombre_archivo: str
-) -> bool:
-    """
-    Exporta los datos a un archivo específico (para exportación manual).
-    
-    Args:
-        trenes: Diccionario de objetos Tren
-        estaciones: Diccionario de objetos Estacion
-        rutas: Lista de objetos Ruta
-        nombre_archivo: Nombre del archivo (con o sin .json)
-        
-    Returns:
-        True si la exportación fue exitosa
-    """
-    # Asegurar extensión .json
-    if not nombre_archivo.endswith('.json'):
-        nombre_archivo += '.json'
-    
-    ruta_exportacion = os.path.join(SAVE_DIR, nombre_archivo)
-    
-    try:
-        if not _asegurar_directorio_guardado():
-            return False
-        
-        data = {
-            "version": "1.0",
-            "timestamp": dt.datetime.now().isoformat(),
-            "trenes": serializar_trenes(trenes),
-            "estaciones": serializar_estaciones(estaciones),
-            "rutas": serializar_rutas(rutas)
-        }
-        
-        with open(ruta_exportacion, 'w', encoding='utf-8') as f:
-            json.dump(data, f, indent=4, ensure_ascii=False)
-        
-        print(f"✓ Datos exportados a '{ruta_exportacion}'")
-        return True
-        
-    except Exception as e:
-        print(f"Error al exportar datos: {e}")
-        return False
-
-
-def listar_guardados_disponibles() -> List[str]:
-    """
-    Lista todos los archivos de guardado disponibles.
-    
-    Returns:
-        Lista de nombres de archivos .json encontrados
-    """
-    if not os.path.exists(SAVE_DIR):
-        return []
-    
-    try:
-        archivos = [
-            f for f in os.listdir(SAVE_DIR)
-            if f.endswith('.json')
-        ]
-        return sorted(archivos)
-    except Exception as e:
-        print(f"Error al listar guardados: {e}")
-        return []
-
-
-def eliminar_guardado(nombre_archivo: str) -> bool:
-    """
-    Elimina un archivo de guardado específico.
-    
-    Args:
-        nombre_archivo: Nombre del archivo a eliminar
-        
-    Returns:
-        True si la eliminación fue exitosa
-    """
-    ruta_archivo = os.path.join(SAVE_DIR, nombre_archivo)
-    
-    try:
-        if os.path.exists(ruta_archivo):
-            os.remove(ruta_archivo)
-            print(f"✓ Archivo '{nombre_archivo}' eliminado")
-            return True
-        else:
-            print(f"El archivo '{nombre_archivo}' no existe")
-            return False
-    except Exception as e:
-        print(f"Error al eliminar archivo: {e}")
-        return False
-
-
-def obtener_info_guardado() -> Optional[Dict[str, Any]]:
-    """
-    Obtiene información sobre el guardado actual sin cargar todos los datos.
-    
-    Returns:
-        Diccionario con metadatos o None si no existe
-    """
-    if not os.path.exists(DATA_FILE_PATH):
-        return None
-    
-    try:
-        with open(DATA_FILE_PATH, 'r', encoding='utf-8') as f:
-            data = json.load(f)
-        
-        return {
-            "version": data.get("version", "desconocida"),
-            "timestamp": data.get("timestamp", "desconocido"),
-            "num_trenes": len(data.get("trenes", {})),
-            "num_estaciones": len(data.get("estaciones", {})),
-            "num_rutas": len(data.get("rutas", [])),
-            "tamaño_archivo": os.path.getsize(DATA_FILE_PATH)
-        }
-    except Exception as e:
-        print(f"Error al obtener info del guardado: {e}")
-        return None
+    from config.ModificarRutas import gestionar_rutas
+    gestionar_rutas(simulador)
