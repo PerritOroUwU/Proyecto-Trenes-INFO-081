@@ -41,8 +41,3 @@ class EstadoSimulacion:
         ]
         evento = random.choice(eventos)
         return evento
-
-    #def __str__(self):
-        #hora, fecha = self.actualizar_display()
-        #return f"EstadoSimulacion(hora_actual={hora}, fecha={fecha})"
-        #Revisar si esto es util
