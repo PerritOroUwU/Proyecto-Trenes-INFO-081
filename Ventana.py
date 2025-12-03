@@ -64,8 +64,7 @@ class SimuladorTrenes:
             Ruta("Estación Central", "Rancagua", 87),
             Ruta("Rancagua", "Talca", 200),
             Ruta("Talca", "Chillán", 180),
-            Ruta("Estación Central", "Chillán", 254),
-            Ruta()
+            Ruta("Estación Central", "Chillán", 254)
         ]
 
     # ========== MÉTODOS DE DESERIALIZACIÓN ==========
