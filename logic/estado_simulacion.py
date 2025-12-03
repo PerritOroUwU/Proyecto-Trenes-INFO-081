@@ -17,5 +17,31 @@ class EstadoSimulacion:
         #self.trenes =
         #self.estaciones =
 
-    def avanzar_tiempo(self, minutos):
-        self.fecha_actual += timedelta(minutes=minutos)
+    def tiempo_actual(self):
+        # Actualiza la hora y fecha actual en formato legible.
+        hora = self.tiempo_actual.strftime("%H:%M:%S")
+        fecha = self.tiempo_actual.strftime("%d/%m/%Y")
+        return hora, fecha
+    
+    def avance_de_tiempo(self, segundos=1):
+        #avance de tiempo en 1 segundo y si pasa de las 8 pm, actualizar la fecha al dia siguiente
+        self.tiempo_actual += timedelta(seconds=segundos)
+        
+        if self.tiempo_actual.hour >= 20:
+            nueva_fecha = self.tiempo_actual.date() + timedelta(days=1)
+            self.tiempo_actual = datetime.combine(nueva_fecha, time(7, 0, 0))
+        
+        return self.tiempo_actual
+
+    def generador_eventos(self):
+        # Generador de eventos aleatorios en la simulacion
+        #revisar como usar la semilla para generar eventos que se pueda repetir
+        eventos = [
+            #nombre de eventos con sus caracteristicas(self)
+        ]
+        evento = random.choice(eventos)
+        return evento
+
+    def __str__(self):
+        hora, fecha = self.actualizar_display()
+        return f"EstadoSimulacion(hora_actual={hora}, fecha={fecha})"
