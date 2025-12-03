@@ -1,0 +1,60 @@
+{
+    "version": "1.0",
+    "timestamp": "2025-12-03T02:46:12.626466",
+    "trenes": {
+        "BMU": {
+            "capacidad": 236,
+            "combustible": "Híbrido",
+            "velocidad_max": 160
+        },
+        "EMU": {
+            "capacidad": 300,
+            "combustible": "Eléctrico",
+            "velocidad_max": 120
+        }
+    },
+    "estaciones": {
+        "Estación Central": {
+            "coord_x": 50,
+            "coord_y": 200,
+            "pasajeros_esperando": []
+        },
+        "Rancagua": {
+            "coord_x": 150,
+            "coord_y": 300,
+            "pasajeros_esperando": []
+        },
+        "Talca": {
+            "coord_x": 300,
+            "coord_y": 100,
+            "pasajeros_esperando": []
+        },
+        "Chillán": {
+            "coord_x": 450,
+            "coord_y": 400,
+            "pasajeros_esperando": []
+        }
+    },
+    "rutas": [
+        [
+            "Estación Central",
+            "Rancagua",
+            87
+        ],
+        [
+            "Rancagua",
+            "Talca",
+            200
+        ],
+        [
+            "Talca",
+            "Chillán",
+            180
+        ],
+        [
+            "Estación Central",
+            "Chillán",
+            254
+        ]
+    ]
+}
