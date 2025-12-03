@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta, time
-from modelos.clases import *
+from models.clases import *
 import random;
 
 class EstadoSimulacion:
