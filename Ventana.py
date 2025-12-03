@@ -154,12 +154,14 @@ class SimuladorTrenes:
         # Lista de botones con sus comandos
         botones = [
             ("Iniciar simulación", self.iniciar_simulacion),
+            ("Ver Pasajeros a Bordo", self.mostrar_pasajeros_abordo)
             ("Acceder a datos de trenes", lambda: self.show_panel("trenes")),
             ("Acceder a datos de estación", lambda: self.show_panel("estaciones")),
             ("Acceder a datos de ruta", lambda: self.show_panel("rutas")),
             ("Modificar datos", self.modificar_datos),
             ("GUARDAR ESTADO", self.guardar_estado),
             ("CARGAR ESTADO", self.cargar_estado)
+
         ]
         
         # Crear cada botón
@@ -397,6 +399,9 @@ class SimuladorTrenes:
             )
             return
         
+        self.generar_pasajeros_estaciones()
+        self.actualizar_pasajeros()
+
         mensaje = (
             f"Simulación de Trenes Iniciada.\n\n"
             f"Parámetros cargados:\n"
@@ -406,6 +411,46 @@ class SimuladorTrenes:
             f"El motor de simulación está calculando los trayectos..."
         )
         messagebox.showinfo("Simulación en Curso", mensaje)
+    
+        # ========== GENERA PASAJEROS  ==========
+    def generar_pasajeros_estaciones(self):
+        """Genera pasajeros aleatorios en cada estación."""
+        import random
+        from models.clases import Pasajero
+    
+        for estacion in self.estaciones.values():
+            num_pasajeros = random.randint(0, 3)  # máximo 3 pasajeros por estación por turno
+            for _ in range(num_pasajeros):
+                origen = estacion.nombre
+                destino = random.choice([e for e in self.estaciones.keys() if e != origen])
+                pasajero = Pasajero(origen, destino, dt.datetime.now())
+                estacion.agregar_pasajero(pasajero)
+
+    def actualizar_pasajeros(self):
+        """Hace que los pasajeros suban y bajen del tren."""
+        for tren in self.trenes.values():
+            # Bajar pasajeros en la estación actual
+            pasajeros_a_bajar = [p for p in getattr(tren, "pasajeros", []) if p.destino == getattr(tren, "ubicacion", None)]
+            for p in pasajeros_a_bajar:
+                tren.pasajeros.remove(p)
+                if tren.ubicacion in self.estaciones:
+                    self.estaciones[tren.ubicacion].agregar_pasajero(p)
+
+        # Subir pasajeros desde la estación actual
+            estacion = self.estaciones.get(getattr(tren, "ubicacion", None))
+            if estacion:
+                while estacion.pasajeros_esperando and len(getattr(tren, "pasajeros", [])) < tren.capacidad:
+                    pasajero = estacion.pasajeros_esperando.pop(0)
+                    tren.pasajeros.append(pasajero)
+
+    def mostrar_pasajeros_abordo(self):
+        """Muestra cuántos pasajeros hay en cada tren."""
+        mensaje = ""
+        for nombre, tren in self.trenes.items():
+            cantidad = len(getattr(tren, "pasajeros", []))
+            mensaje += f"{nombre}: {cantidad} pasajeros a bordo\n"
+        messagebox.showinfo("Pasajeros a Bordo", mensaje)
+    
 
     def modificar_datos(self):
         """Abre el módulo de modificación de datos."""
