@@ -506,3 +506,15 @@ class Ruta:
         if len(data) != 3:
             raise ValueError("La tupla debe tener exactamente 3 elementos")
         return cls(origen=data[0], destino=data[1], distancia_km=data[2])
+class Cliente:
+    """guarda datos de os clientes"""
+    def __init__(self, id, fecha: dt.datetime):
+        self.id = id
+        self.fecha = fecha
+
+    def __repr__(self):
+        return f"Cliente {self.id} ({self.fecha.strftime('%H:%M')})"
+
+
+def constructor_cliente(id, fecha):
+    return Cliente(id, fecha)
