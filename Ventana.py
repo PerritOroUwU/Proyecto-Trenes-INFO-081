@@ -11,7 +11,7 @@ class SimuladorTrenes:
         self.master = master
         master.title("Simulador de Trenes")        
         
-        master.geometry("900x700")
+        master.geometry("800x600")
 
         data = cargar_datos()
 
@@ -28,8 +28,11 @@ class SimuladorTrenes:
             "Talca": Estacion("Talca", 300, 100),
             "Chillán": Estacion("Chillán", 450, 400)
         }
-        default_rutas = [ ("Santiago", "Rancagua", 80), ("Rancagua", "Talca", 150), ("Talca", "Chillán", 100) ]
-        
+        default_rutas = [ 
+            Ruta("Santiago", "Rancagua", 80), 
+            Ruta("Rancagua", "Talca", 150), 
+            Ruta("Talca", "Chillán", 100) 
+        ]
         # 3. Asignar los datos cargados o los valores por defecto
         
         # Si el archivo de guardado no existe o devuelve datos vacíos
@@ -41,9 +44,27 @@ class SimuladorTrenes:
             # Aquí es donde ocurre el cambio crucial: deserializar los datos cargados
             self.trenes = self.deserializar_trenes(data["trenes"])
             self.estaciones = self.deserializar_estaciones(data["estaciones"])
-            self.rutas = data["rutas"] # Las rutas son listas/tuplas simples
+            self.rutas = self.deserializar_rutas(data["rutas"]) 
             
         self.crear_interfaz()
+
+    def gestionar_trenes_ui(self, parent_frame):
+        """Panel de gestión de trenes (implementación básica)."""
+        panel = ttk.LabelFrame(parent_frame, text="Gestión de Trenes", padding=10)
+        ttk.Label(panel, text="Interfaz de gestión de trenes aquí").pack(padx=5, pady=5)
+        return panel
+
+    def gestionar_estaciones_ui(self, parent_frame):
+        """Panel de gestión de estaciones (implementación básica)."""
+        panel = ttk.LabelFrame(parent_frame, text="Gestión de Estaciones", padding=10)
+        ttk.Label(panel, text="Interfaz de gestión de estaciones aquí").pack(padx=5, pady=5)
+        return panel
+
+    def gestionar_rutas_ui(self, parent_frame):
+        """Panel de gestión de rutas (implementación básica)."""
+        panel = ttk.LabelFrame(parent_frame, text="Gestión de Rutas", padding=10)
+        ttk.Label(panel, text="Interfaz de gestión de rutas aquí").pack(padx=5, pady=5)
+        return panel
 
     def deserializar_trenes(self, trenes_dict):
         """Convierte los diccionarios de trenes cargados (JSON) de vuelta a objetos Tren."""
@@ -106,6 +127,17 @@ class SimuladorTrenes:
             objetos_estacion[nombre] = estacion
             
         return objetos_estacion
+    
+    def deserializar_rutas(self, rutas_lista):
+        """Convierte una lista de tuplas de rutas cargadas de vuelta a una lista de objetos Ruta."""
+        objetos_ruta = []
+        for origen, destino, distancia in rutas_lista:
+            objetos_ruta.append(Ruta(
+                origen=origen,
+                destino=destino,
+                distancia_km=distancia
+            ))
+        return objetos_ruta
 
     def guardar_estado(self):
         """Método que llama a la función de guardado externo."""
@@ -120,7 +152,23 @@ class SimuladorTrenes:
             menu_frame.grid(row=0, column=0, sticky="nsew")
             menu_frame.grid_columnconfigure(0, weight=1)
             menu_frame.grid_columnconfigure(1, weight=1)
+            self.master.grid_columnconfigure(1, weight=1)
+            self.master.grid_columnconfigure(0, weight=0)
+            self.master.grid_rowconfigure(0, weight=1)
+
+            self.crear_menu_lateral()
             
+            self.main_content_frame = ttk.Frame(self.master)
+            self.main_content_frame.grid(row=0, column=1, sticky="nsew", padx=10, pady=10)
+
+            self.main_content_frame.grid_columnconfigure(0, weight=1)
+            self.main_content_frame.grid_rowconfigure(0, weight=1)
+
+            self.paneles = {}
+            self.crear_paneles_gestion()
+
+            self.show_panel("Mapa")
+
             canvas = tk.Canvas(menu_frame, bg="#e0e0e0") 
             canvas.grid(row=0, column=0, columnspan=2, sticky="nsew") 
             menu_frame.grid_rowconfigure(0, weight=1)        
@@ -128,7 +176,14 @@ class SimuladorTrenes:
             left_menu = ttk.Frame(canvas, padding="10")
             canvas.create_window(150, 150, window=left_menu, anchor="center") 
             
-            botones_izq = [
+    def crear_menu_lateral(self):
+        """
+        Crea el marco del menú lateral y coloca los botones de acción.
+        """
+        # 1. Crear el Frame que contendrá todos los botones (Columna 0 de la ventana principal)
+        left_menu = ttk.Frame(self.master, padding="10")
+        left_menu.grid(row=0, column=0, sticky="nsew")            
+        botones_izq = [
                 "Iniciar simulación", 
                 "Acceder a datos de trenes", 
                 "Acceder a datos de estación",
@@ -138,30 +193,23 @@ class SimuladorTrenes:
                 "CARGAR ESTADO"
             ]
                     
-            for i, text in enumerate(botones_izq):
-                boton = ttk.Button(left_menu, text=text, command=lambda t=text: self.manejo_click_menu(t))
-                boton.pack(fill='x', pady=5)
+        for i, text in enumerate(botones_izq):
+            boton = ttk.Button(left_menu, text=text, command=lambda t=text: self.manejo_click_menu(t))
+            boton.grid(row=i, column=0, sticky="ew", pady=5, padx=5)
+        left_menu.grid_columnconfigure(0, weight=1)
+        self.left_menu = left_menu
             
-            right_menu = ttk.Frame(canvas, padding="10")
-            canvas.create_window(650, 150, window=right_menu, anchor="center") 
-           
-            botones_der = [
-                "Acceder a datos de trenes", 
-                "Acceder a datos de estación",
-                "Acceder a datos de ruta"
-            ]
-        
-            for text in botones_der:
-                boton = ttk.Button(right_menu, text=text, command=lambda t=text: print(f"Presionado: {t}"))
-                boton.pack(fill='x', pady=5)
 
     def crear_paneles(self):
         
         data_frame = ttk.Frame(self.master, padding="10")
-        data_frame.grid(row=1, column=0, sticky="nsew")
+        data_frame.grid(row=0, column=1, sticky="nsew", padx=10, pady=10)
 
         data_frame.grid_columnconfigure(0, weight=1)
-        
+        data_frame.grid_columnconfigure(1, weight=1)
+        data_frame.grid_columnconfigure(2, weight=1)
+        data_frame.grid_rowconfigure(0, weight=1)
+
         map_panel = ttk.LabelFrame(data_frame, text="Rutas y Mapa")
         map_panel.grid(row=0, column=0, padx=5, sticky="nsew", columnspan=1)
         
@@ -186,39 +234,144 @@ class SimuladorTrenes:
         map_container.grid_columnconfigure(0, weight=1)        
         
         self.dibujar_mapa()
+    
+    def crear_map_panel(self, parent_frame):
+        """
+        Crea el marco, el Canvas y las barras de desplazamiento para el mapa de rutas.
+        Retorna el marco principal del mapa.
+        """
+        # Marco principal del mapa
+        map_panel = ttk.LabelFrame(parent_frame, text="Rutas y Mapa", padding=5)
         
+        # 1. Configurar el contenedor (map_container) para que sea expandible
+        map_container = ttk.Frame(map_panel)
+        map_container.grid(row=0, column=0, sticky="nsew")
+        
+        # El map_panel y map_container deben expandirse dentro de sus padres
+        map_panel.grid_columnconfigure(0, weight=1)
+        map_panel.grid_rowconfigure(0, weight=1)
+        
+        # 2. Crear barras de desplazamiento (Scrollbars)
+        v_scrollbar = ttk.Scrollbar(map_container, orient="vertical")
+        h_scrollbar = ttk.Scrollbar(map_container, orient="horizontal")
+
+        # 3. Crear el Canvas (Aquí es donde se dibujarán las estaciones y rutas)
+        self.map_canvas = tk.Canvas(map_container, 
+                                    bg="white", 
+                                    yscrollcommand=v_scrollbar.set, 
+                                    xscrollcommand=h_scrollbar.set)
+                                    
+        # 4. Configurar el Canvas para que se expanda
+        self.map_canvas.grid(row=0, column=0, sticky="nsew")
+
+        # 5. Colocar barras de desplazamiento y enlazarlas
+        v_scrollbar.grid(row=0, column=1, sticky="ns")
+        h_scrollbar.grid(row=1, column=0, sticky="ew")
+        
+        v_scrollbar.config(command=self.map_canvas.yview)
+        h_scrollbar.config(command=self.map_canvas.xview)
+        
+        # 6. Configurar la expansión del contenedor interno
+        map_container.grid_rowconfigure(0, weight=1)
+        map_container.grid_columnconfigure(0, weight=1)
+
+        # Llamada inicial para dibujar el contenido (estaciones y rutas por defecto)
+        self.dibujar_mapa() 
+
+        return map_panel
+
+    def crear_paneles_gestion(self):
+        
+        # --- Panel de Rutas y Mapa (Ya existente) ---
+        # Este panel es el más complejo, por lo que puede tener su propia función.
+        map_panel = self.crear_map_panel(self.main_content_frame) 
+        self.paneles["mapa"] = map_panel
+        # Colocamos en la misma celda, pero solo uno estará visible
+        map_panel.grid(row=0, column=0, sticky="nsew") 
+
+        # --- Panel de Gestión de Trenes ---
+        # Si tienes una función gestionar_trenes_ui que devuelve un Frame:
+        tren_panel = self.gestionar_trenes_ui(self.main_content_frame)
+        self.paneles["trenes"] = tren_panel
+        tren_panel.grid(row=0, column=0, sticky="nsew") # Mismo lugar que el mapa
+        
+        # --- Panel de Gestión de Estaciones ---
+        estacion_panel = self.gestionar_estaciones_ui(self.main_content_frame)
+        self.paneles["estaciones"] = estacion_panel
+        estacion_panel.grid(row=0, column=0, sticky="nsew") # Mismo lugar
+        
+        # --- Panel de Gestión de Rutas (La lista de rutas, no el mapa) ---
+        rutas_panel = self.gestionar_rutas_ui(self.main_content_frame)
+        self.paneles["rutas"] = rutas_panel
+        rutas_panel.grid(row=0, column=0, sticky="nsew") # Mismo lugar
+
+        # Inicialmente, ocultamos todos excepto el mapa
+        self.show_panel("mapa")
+        
+    def show_panel(self, panel_name):
+        """Muestra el panel solicitado y oculta todos los demás."""
+        
+        target_panel = self.paneles.get(panel_name)
+        if not target_panel:
+            print(f"Error: Panel '{panel_name}' no encontrado.")
+            return
+
+        # Ocultar todos los paneles
+        for name, panel in self.paneles.items():
+            # Usamos grid_remove para ocultar el widget sin perder la configuración de grid
+            panel.grid_remove() 
+            
+        # Mostrar el panel deseado
+        target_panel.grid()
+
     def dibujar_mapa(self):
         
+        """Dibuja las estaciones y rutas y configura el scrollregion del canvas."""
         if not self.map_canvas:
             return
             
-        self.map_canvas.delete("all") 
-
-        min_x, min_y = 0, 0
-        max_x, max_y = 500, 500         
-        
-        for origen, destino, _ in self.rutas:
-            if origen in self.estaciones and destino in self.estaciones:
-                x1, y1 = self.estaciones[origen]
-                x2, y2 = self.estaciones[destino]
-                self.map_canvas.create_line(x1, y1, x2, y2, 
-                                            dash=(4, 2), width=2, fill="gray")
+        self.map_canvas.delete("all") # Limpiar dibujos anteriores
         
         radio = 5
         estacion_coords = []
-        for nombre, (x, y) in self.estaciones.items():
+        
+        # 1. Dibujar Rutas (Líneas)
+        for ruta in self.rutas:
+            # Accedemos a los atributos del objeto Ruta
+            origen = ruta.origen
+            destino = ruta.destino
+            
+            # Buscamos las coordenadas de las estaciones (que son objetos Estacion)
+            if origen in self.estaciones and destino in self.estaciones:
+                # Usamos los atributos del objeto Estacion
+                x1, y1 = self.estaciones[origen].coordenada_x, self.estaciones[origen].coordenada_y
+                x2, y2 = self.estaciones[destino].coordenada_x, self.estaciones[destino].coordenada_y
+                
+                self.map_canvas.create_line(x1, y1, x2, y2, 
+                                            dash=(4, 2), width=2, fill="gray")
+        
+        # 2. Dibujar Estaciones (Círculos y Etiquetas)
+        for nombre, estacion in self.estaciones.items():
+            # Usamos los atributos del objeto Estacion
+            x, y = estacion.coordenada_x, estacion.coordenada_y
+            
+            # Dibujar el círculo y texto
             self.map_canvas.create_oval(x - radio, y - radio, x + radio, y + radio, 
                                         fill="blue", outline="black")
             self.map_canvas.create_text(x, y - 15, text=nombre, anchor=tk.S, fill="black")
             
             estacion_coords.append(x)
             estacion_coords.append(y)
-        
+            
+        # 3. Configurar el área de desplazamiento (Scrollregion)
+        # ... (código para configurar el scrollregion, se mantiene igual)
         if estacion_coords:
             min_x = min(estacion_coords) - 50
             min_y = min(estacion_coords) - 50
             max_x = max(estacion_coords) + 50
-            max_y = max(estacion_coords) + 50        
+            max_y = max(estacion_coords) + 50
+        else:
+             min_x, min_y, max_x, max_y = 0, 0, 500, 500
         
         self.map_canvas.config(scrollregion=(min_x, min_y, max_x, max_y))
 
@@ -227,12 +380,12 @@ class SimuladorTrenes:
         
         if action_nombre == "Iniciar simulación":
             self.iniciar_simulacion()
-        elif "datos de trenes" in action_nombre:
-            self.mostrar_datos("Trenes")
-        elif "datos de estación" in action_nombre:
-            self.mostrar_datos("Estación")
-        elif "datos de ruta" in action_nombre:
-            self.mostrar_datos("Ruta")
+        elif action_nombre == "Acceder a datos de trenes":
+            self.show_panel("trenes")
+        elif action_nombre == "Acceder a datos de estaciones":
+            self.show_panel("estaciones")
+        elif action_nombre == "Acceder a datos de rutas":
+            self.show_panel("rutas")
         elif action_nombre == "Modificar datos":
             self.modificar_datos()
         elif action_nombre == "Modificar datos":
@@ -373,4 +526,3 @@ if __name__ == '__main__':
     root = tk.Tk()
     app = SimuladorTrenes(root)
     root.mainloop()
-
