@@ -26,7 +26,7 @@ class Tren:
         self.capacidad = capacidad
         self.combustible = combustible
         self.velocidad_max = velocidad_max
-    
+        self.pasajeros = []   
     @staticmethod
     def _validar_parametros(nombre: str, capacidad: int, velocidad_max: int):
         """Valida los parámetros de entrada."""
@@ -251,6 +251,8 @@ class Estacion:
         self.coordenada_x = coordenada_x
         self.coordenada_y = coordenada_y
         self.pasajeros_esperando: List[Pasajero] = []
+    def agregar_pasajero(self, pasajero):
+        self.pasajeros_esperando.append(pasajero)
     
     @staticmethod
     def _validar_parametros(nombre: str, coordenada_x: int, coordenada_y: int):
